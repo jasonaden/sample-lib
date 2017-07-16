@@ -5,15 +5,16 @@ everything else is fair game.
 */
 
 let intervals = new Map<number, number | null>()
+let timeoutId: number
 
 function runInterval(
   intervalId: number,
   func: () => void,
   delay: number,
   ...params: any[]
-): number {
+) {
   if (intervals.has(intervalId)) {
-    let timeoutId = window.setTimeout(
+    timeoutId = window.setTimeout(
       function(...params) {
         func(...params)
         runInterval(intervalId, func, delay, ...params)
@@ -52,4 +53,5 @@ export function setInterval(
 
 export function clearInterval(intervalId: number): void {
   intervals.delete(intervalId)
+  clearTimeout(timeoutId)
 }
